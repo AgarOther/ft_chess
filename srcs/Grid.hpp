@@ -6,12 +6,13 @@
 /*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:58:21 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/06/22 18:02:10 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/06/22 21:36:42 by scraeyme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include <utility>
+#include <vector>
 
 enum Player
 {
@@ -31,17 +32,16 @@ enum Piece
 	QUEEN
 };
 
-enum Direction
-{
-	NORTH,
-	EAST,
-	WEST,
-	SOUTH,
-	NORTHWEST,
-	NORTHEAST,
-	SOUTHWEST,
-	SOUTHEAST
-};
+const std::vector<std::pair<int, int>> directions = {
+			{ 0, -1 }, // NORTH
+			{ 0,  1 }, // SOUTH
+			{ 1,  0 }, // EAST
+			{-1,  0 }, // WEST
+			{-1, -1 }, // NORTHWEST
+			{ 1, -1 }, // NORTHEAST
+			{-1,  1 }, // SOUTHWEST
+			{ 1,  1 }  // SOUTHEAST
+    	};
 
 constexpr char startingGrid[8][8] = {
             {'r','n','b','q','k','b','n','r'},
