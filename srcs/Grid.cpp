@@ -6,18 +6,37 @@
 /*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 17:00:45 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/06/22 21:36:51 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/06/22 22:34:27 by scraeyme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils/Utils.hpp"
 #include "Grid.hpp"
+#include "Texture.hpp"
 #include <algorithm>
 #include <iostream>
 
 Grid::Grid()
 {
 	std::copy(&startingGrid[0][0], &startingGrid[0][0] + 64, &_grid[0][0]);
+	for (int x = 0; x < 8; x++)
+	{
+		for (int y = 0; y < 8; y++)
+		{
+			sf::Sprite tile;
+			sf::Sprite piece;
+			tile.setPosition(x * 75 + PIECE_OFFSET_X, y * 75 + PIECE_OFFSET_Y);
+			piece.setPosition(x * 75 + PIECE_OFFSET_X, y * 75 + PIECE_OFFSET_Y);
+			tile.setScale(tile.getScale().x / 2, tile.getScale().y / 2);
+			piece.setScale(piece.getScale().x / 2, piece.getScale().y / 2);
+			if ((x + y) % 2 == 0)
+				tile.setTexture(*Texture::getPieceTexture(Piece::EMPTY, WHITE), true);
+			else
+				tile.setTexture(*Texture::getPieceTexture(Piece::EMPTY, BLACK), true);
+			_tiles.push_back(tile);
+			_pieces.push_back(piece);
+		}
+	}
 }
 
 Grid::~Grid() {}
@@ -32,6 +51,28 @@ char Grid::getPieceAt(short x, short y) const
 	if (x < 0 || x > 7 || y < 0 || y > 7)
 		return ('X');
 	return (_grid[y][x]);
+}
+
+void Grid::render(sf::RenderWindow &window)
+{
+	int i;
+
+	for (const auto &tile : _tiles)
+		window.draw(tile);
+	i = 0;
+	for (int x = 0; x < 8; x++)
+	{
+		for (int y = 0; y < 8; y++)
+		{
+			Texture *tmp = Texture::getPieceTexture(_grid[y][x]);
+			if (tmp)
+			{
+				_pieces[i].setTexture(*tmp, true);
+				window.draw(_pieces[i]);
+			}
+			i++;
+		}
+	}
 }
 
 bool Grid::hasDanger(std::pair<short, short> pos, Player player)

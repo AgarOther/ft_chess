@@ -6,7 +6,7 @@
 /*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:53:44 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/06/22 16:54:22 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/06/22 21:52:07 by scraeyme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Audio.hpp>
+#include <iostream>
 
 #define FAILSAFE(x, y) if (!(x)) \
 					{ \

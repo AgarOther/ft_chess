@@ -6,13 +6,18 @@
 /*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:58:21 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/06/22 21:36:42 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/06/22 22:26:36 by scraeyme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <utility>
 #include <vector>
+
+#define PIECE_OFFSET_X 220
+#define PIECE_OFFSET_Y 50
 
 enum Player
 {
@@ -23,13 +28,13 @@ enum Player
 
 enum Piece
 {
-	EMPTY,
 	PAWN,
 	ROOK,
 	KNIGHT,
 	BISHOP,
 	KING,
-	QUEEN
+	QUEEN,
+	EMPTY
 };
 
 const std::vector<std::pair<int, int>> directions = {
@@ -74,8 +79,11 @@ class Grid
 		Player hasCheck();
 		char (*getGrid())[8];
 		char getPieceAt(short x, short y) const;
+		void render(sf::RenderWindow &window);
 	private:
 		char _grid[8][8];
+		std::vector<sf::Sprite> _tiles;
+		std::vector<sf::Sprite> _pieces;
 		bool checkCheck(const std::pair<short, short> &kingPos, Player player);
 		bool hasDanger(std::pair<short, short> pos, Player player);
 };

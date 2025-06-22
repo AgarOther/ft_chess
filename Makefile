@@ -9,6 +9,7 @@ NAME				=	ft_chess
 # Sources & Includes
 SRCS				= 	srcs/main.cpp \
 						srcs/Grid.cpp \
+						srcs/Texture.cpp \
 						srcs/utils/chess_utils.cpp
 OBJ_FOLDER			=	objs
 INCLUDES			=	includes
