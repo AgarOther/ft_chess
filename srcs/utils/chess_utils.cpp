@@ -6,21 +6,42 @@
 /*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 17:08:58 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/06/22 17:16:23 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/06/22 17:47:28 by scraeyme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Utils.hpp"
 
-std::pair<int, int> Utils::getPosition(Grid &grid, char piece)
+char Utils::getPieceAsChar(Piece piece)
 {
-	for (int x = 0; x < 8; x++)
+	switch (piece)
 	{
-		for (int y = 0; y < 8; y++)
+		case EMPTY:
+			return ('.');
+		case PAWN:
+			return ('p');
+		case ROOK:
+			return ('r');
+		case KNIGHT:
+			return ('n');
+		case BISHOP:
+			return ('b');
+		case KING:
+			return ('k');
+		case QUEEN:
+			return ('q');
+	}
+}
+
+std::pair<short, short> Utils::getPosition(Grid &grid, char piece)
+{
+	for (short x = 0; x < 8; x++)
+	{
+		for (short y = 0; y < 8; y++)
 		{
 			if (grid.getGrid()[y][x] == piece)
-				return (std::pair<int, int>(x, y));
+				return (std::pair<short, short>(x, y));
 		}
 	}
-	return (std::pair<int, int>(-1, -1));
+	return (std::pair<short, short>(-1, -1));
 }

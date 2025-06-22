@@ -6,7 +6,7 @@
 /*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:58:21 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/06/22 17:28:09 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/06/22 18:02:10 by scraeyme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,29 @@ enum Player
 	BLACK
 };
 
+enum Piece
+{
+	EMPTY,
+	PAWN,
+	ROOK,
+	KNIGHT,
+	BISHOP,
+	KING,
+	QUEEN
+};
+
+enum Direction
+{
+	NORTH,
+	EAST,
+	WEST,
+	SOUTH,
+	NORTHWEST,
+	NORTHEAST,
+	SOUTHWEST,
+	SOUTHEAST
+};
+
 constexpr char startingGrid[8][8] = {
             {'r','n','b','q','k','b','n','r'},
             {'p','p','p','p','p','p','p','p'},
@@ -31,7 +54,7 @@ constexpr char startingGrid[8][8] = {
             {'R','N','B','Q','K','B','N','R'}
         };
 
-constexpr std::pair<int, int> knightRadius[8] = {
+constexpr std::pair<short, short> knightRadius[8] = {
 	{-1, -2},
 	{ 1, -2},
 	{-1,  2},
@@ -50,7 +73,9 @@ class Grid
 
 		Player hasCheck();
 		char (*getGrid())[8];
-		char getPieceAt(int x, int y);
+		char getPieceAt(short x, short y) const;
 	private:
 		char _grid[8][8];
+		bool checkCheck(const std::pair<short, short> &kingPos, Player player);
+		bool hasDanger(std::pair<short, short> pos, Player player);
 };

@@ -6,7 +6,7 @@
 /*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 17:15:49 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/06/22 17:16:26 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/06/22 18:03:03 by scraeyme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,12 @@
 #include <utility>
 #include "../Grid.hpp"
 
+#define PIECE(piece, player) (Utils::getPieceAsChar(piece) - ((player) == WHITE ? 32 : 0))
+#define INVERT_PLAYER(player) ((player) == WHITE ? BLACK : WHITE)
+
 class Utils
 {
 	public:
-		static std::pair<int, int> getPosition(Grid &grid, char piece);
+		static std::pair<short, short> getPosition(Grid &grid, char piece);
+		static char getPieceAsChar(Piece piece);
 };

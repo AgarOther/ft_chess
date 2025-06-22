@@ -4,7 +4,7 @@ CFLAGS				=	-Wall -Wextra -Werror -std=c++17 -g -MP -MMD
 SFML_FLAGS			=	-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 # Names
-NAME				=	ft_slot
+NAME				=	ft_chess
 
 # Sources & Includes
 SRCS				= 	srcs/main.cpp
