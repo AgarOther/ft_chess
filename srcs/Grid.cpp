@@ -6,7 +6,7 @@
 /*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 17:00:45 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/06/23 21:08:47 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/06/23 21:59:19 by scraeyme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "Grid.hpp"
 #include "Texture.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <algorithm>
 #include <iostream>
 
@@ -190,9 +192,48 @@ Player Grid::hasCheck()
 
 void Grid::handleInputs(sf::RenderWindow &window)
 {
+	static std::pair<short, short> pieceHeld = {-1, -1};
+	static Player turn = WHITE;
+	static sf::Sprite *currentPiece = nullptr;
+	sf::Vector2<float> mousePos = WORLDPOS(window);
+	short x;
+	short y;
+
+	mousePos.x -= PIECE_OFFSET_X;
+	mousePos.y -= PIECE_OFFSET_Y;
+	x = static_cast<int>(mousePos.x) / 75;
+	y = static_cast<int>(mousePos.y) / 75;
+	if (x > 7 || x < 0 || y > 7 || y < 0)
+		return;
+	if ((_grid[y][x] == '.' && pieceHeld.first == -1) || (std::isupper(_grid[y][x]) && turn != WHITE && _grid[y][x] != '.')
+			|| (std::islower(_grid[y][x]) && turn != BLACK && _grid[y][x] != '.'))
+		return;
+	if (std::pair<short, short>(x, y) == pieceHeld)
+		pieceHeld = {-1, -1};
+	else if (pieceHeld.first == -1 || (pieceHeld.first != -1 && _grid[y][x] != '.' && ((std::isupper(_grid[y][x]) && turn == WHITE)
+			|| (std::islower(_grid[y][x]) && turn == BLACK))))
+		pieceHeld = std::pair<short, short>(x, y);
 	for (auto &piece : _pieces)
 	{
 		if (piece.getGlobalBounds().contains(WORLDPOS(window)))
-			piece.setRotation(90.f);
+		{
+			if (currentPiece)
+			{
+				currentPiece->setScale(currentPiece->getScale().x - 0.05f, currentPiece->getScale().y - 0.05f);
+				currentPiece->setPosition(currentPiece->getPosition().x + 3.25f, currentPiece->getPosition().y + 6.25f);
+			}
+			if (pieceHeld.first != -1)
+			{
+				piece.setScale(piece.getScale().x + 0.05f, piece.getScale().y + 0.05f);
+				piece.setPosition(piece.getPosition().x - 3.25f, piece.getPosition().y - 6.25f);
+				currentPiece = &piece;
+			}
+			else
+				currentPiece = nullptr;
+		}
+	}
+	if (pieceHeld.first != -1 && _grid[y][x] == '.')
+	{
+		
 	}
 }

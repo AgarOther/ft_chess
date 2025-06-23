@@ -6,7 +6,7 @@
 /*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:54:46 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/06/23 21:07:02 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/06/23 21:20:20 by scraeyme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ int main()
 	Grid grid;
 
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "ft_chess");
-	std::cout << (grid.hasCheck() ? "Yes" : "No") << std::endl;
+	Player hasCheck = grid.hasCheck();
+	std::cout << (hasCheck == WHITE ? "White" : hasCheck == BLACK ? "Black" : "None") << std::endl;
 
 	while (window.isOpen())
 	{
