@@ -20,7 +20,7 @@
 class Utils
 {
 	public:
-		static std::pair<short, short> getPosition(Grid &grid, char piece);
+		static std::pair<short, short> getPosition(Grid &grid, Piece piece, Player player);
 		static char getPieceAsChar(Piece piece);
 		static bool isOpponentPiece(char piece, Player player);
 };

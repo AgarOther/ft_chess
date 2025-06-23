@@ -85,5 +85,5 @@ class Grid
 		std::vector<sf::Sprite> _tiles;
 		std::vector<sf::Sprite> _pieces;
 		bool checkCheck(const std::pair<short, short> &kingPos, Player player);
-		bool hasDanger(std::pair<short, short> pos, Player player);
+		bool hasDanger(const std::pair<short, short> &pos, Player player);
 };

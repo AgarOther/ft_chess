@@ -19,7 +19,7 @@ bool Utils::isOpponentPiece(char piece, Player player)
 		return (false);
 	else if (player == WHITE && std::isupper(piece))
 		return (false);
-	else if (player == BLACK && !std::isupper(piece))
+	else if (player == BLACK && std::islower(piece))
 		return (false);
 	return (true);
 }
@@ -46,13 +46,14 @@ char Utils::getPieceAsChar(Piece piece)
 	return ('X');
 }
 
-std::pair<short, short> Utils::getPosition(Grid &grid, char piece)
+std::pair<short, short> Utils::getPosition(Grid &grid, Piece piece, Player player)
 {
+	char playerPiece = getPieceAsChar(piece) - (player == WHITE ? 32 : 0);
 	for (short x = 0; x < 8; x++)
 	{
 		for (short y = 0; y < 8; y++)
 		{
-			if (grid.getGrid()[y][x] == piece)
+			if (grid.getGrid()[y][x] == playerPiece)
 				return (std::pair<short, short>(x, y));
 		}
 	}

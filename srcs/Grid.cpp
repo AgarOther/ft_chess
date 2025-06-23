@@ -75,7 +75,7 @@ void Grid::render(sf::RenderWindow &window)
 	}
 }
 
-bool Grid::hasDanger(std::pair<short, short> pos, Player player)
+bool Grid::hasDanger(const std::pair<short, short> &pos, Player player)
 {
 	int x;
 	int y;
@@ -121,8 +121,8 @@ bool Grid::checkCheck(const std::pair<short, short> &kingPos, Player player)
 
 Player Grid::hasCheck()
 {
-	std::pair<short, short> whiteKingPos = Utils::getPosition(*this, 'K');
-	std::pair<short, short> blackKingPos = Utils::getPosition(*this, 'k');
+	std::pair<short, short> whiteKingPos = Utils::getPosition(*this, KING, WHITE);
+	std::pair<short, short> blackKingPos = Utils::getPosition(*this, KING, BLACK);
 
 	return (checkCheck(whiteKingPos, WHITE) ? WHITE : checkCheck(blackKingPos, BLACK) ? BLACK : NONE);
 }

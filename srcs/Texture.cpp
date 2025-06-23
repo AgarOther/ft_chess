@@ -40,7 +40,7 @@ Texture *Texture::getPieceTexture(char piece)
 {
 	if (piece == '.')
 		return (nullptr);
-	for (int i = (!std::isupper(piece) ? 6 : 0); i < 12; i++)
+	for (int i = (std::islower(piece) ? 6 : 0); i < 12; i++)
 	{
 		if (texNames[i][1] == std::tolower(piece))
 			return (pieceTextures[i]);
