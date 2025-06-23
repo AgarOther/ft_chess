@@ -6,7 +6,7 @@
 /*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 17:00:45 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/06/23 21:59:19 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/06/23 22:22:06 by scraeyme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,7 @@ void Grid::handleInputs(sf::RenderWindow &window)
 	sf::Vector2<float> mousePos = WORLDPOS(window);
 	short x;
 	short y;
+	Piece gridPiece;
 
 	mousePos.x -= PIECE_OFFSET_X;
 	mousePos.y -= PIECE_OFFSET_Y;
@@ -205,13 +206,13 @@ void Grid::handleInputs(sf::RenderWindow &window)
 	y = static_cast<int>(mousePos.y) / 75;
 	if (x > 7 || x < 0 || y > 7 || y < 0)
 		return;
-	if ((_grid[y][x] == '.' && pieceHeld.first == -1) || (std::isupper(_grid[y][x]) && turn != WHITE && _grid[y][x] != '.')
-			|| (std::islower(_grid[y][x]) && turn != BLACK && _grid[y][x] != '.'))
+	gridPiece = Utils::getPiece(_grid[y][x]);
+	if ((gridPiece == EMPTY && pieceHeld.first == -1) || (pieceHeld.first == -1 && std::isupper(_grid[y][x]) && turn != WHITE && _grid[y][x] != '.')
+			|| (pieceHeld.first == -1 && std::islower(_grid[y][x]) && turn != BLACK && _grid[y][x] != '.'))
 		return;
-	if (std::pair<short, short>(x, y) == pieceHeld)
+	if (std::pair<short, short>(x, y) == pieceHeld || Utils::isOpponentPiece(_grid[y][x], turn) || gridPiece == EMPTY)
 		pieceHeld = {-1, -1};
-	else if (pieceHeld.first == -1 || (pieceHeld.first != -1 && _grid[y][x] != '.' && ((std::isupper(_grid[y][x]) && turn == WHITE)
-			|| (std::islower(_grid[y][x]) && turn == BLACK))))
+	else if (pieceHeld.first == -1 || (pieceHeld.first != -1 && _grid[y][x] != '.' && Utils::isOpponentPiece(gridPiece, turn)))
 		pieceHeld = std::pair<short, short>(x, y);
 	for (auto &piece : _pieces)
 	{
@@ -231,9 +232,5 @@ void Grid::handleInputs(sf::RenderWindow &window)
 			else
 				currentPiece = nullptr;
 		}
-	}
-	if (pieceHeld.first != -1 && _grid[y][x] == '.')
-	{
-		
 	}
 }
