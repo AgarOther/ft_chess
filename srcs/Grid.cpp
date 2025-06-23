@@ -6,22 +6,23 @@
 /*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 17:00:45 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/06/22 22:34:27 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/06/23 21:08:47 by scraeyme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils/Utils.hpp"
 #include "Grid.hpp"
 #include "Texture.hpp"
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <algorithm>
 #include <iostream>
 
 Grid::Grid()
 {
 	std::copy(&startingGrid[0][0], &startingGrid[0][0] + 64, &_grid[0][0]);
-	for (int x = 0; x < 8; x++)
+	for (short x = 0; x < 8; x++)
 	{
-		for (int y = 0; y < 8; y++)
+		for (short y = 0; y < 8; y++)
 		{
 			sf::Sprite tile;
 			sf::Sprite piece;
@@ -55,14 +56,14 @@ char Grid::getPieceAt(short x, short y) const
 
 void Grid::render(sf::RenderWindow &window)
 {
-	int i;
+	short i;
 
 	for (const auto &tile : _tiles)
 		window.draw(tile);
 	i = 0;
-	for (int x = 0; x < 8; x++)
+	for (short x = 0; x < 8; x++)
 	{
-		for (int y = 0; y < 8; y++)
+		for (short y = 0; y < 8; y++)
 		{
 			Texture *tmp = Texture::getPieceTexture(_grid[y][x]);
 			if (tmp)
@@ -75,10 +76,34 @@ void Grid::render(sf::RenderWindow &window)
 	}
 }
 
+bool Grid::checkDirection(short x, short y, Player player, std::vector<std::pair<int, int>> dirs)
+{
+	short qx;
+	short qy;
+
+	for (const auto& [dqx, dqy] : dirs)
+	{
+		qx = x;
+		qy = y;
+		while (qx >= 0 && qx < 8 && qy >= 0 && qy < 8)
+		{
+			qx += dqx;
+			qy += dqy;
+			if (!(qx >= 0 && qx < 8 && qy >= 0 && qy < 8))
+				break;
+			if (_grid[qy][qx] != PIECE(KING, player) && _grid[qy][qx] != '.')
+				break;
+			if (_grid[qy][qx] != '.')
+				return (true);
+		}
+	}
+	return (false);
+}
+
 bool Grid::hasDanger(const std::pair<short, short> &pos, Player player)
 {
-	int x;
-	int y;
+	short x;
+	short y;
 	bool opponentPiece;
 
 	for (const auto& [dx, dy] : directions)
@@ -94,9 +119,45 @@ bool Grid::hasDanger(const std::pair<short, short> &pos, Player player)
 			opponentPiece = Utils::isOpponentPiece(_grid[y][x], player);
 			if (opponentPiece)
 			{
-				// Chess logic
+				Piece piece = Utils::getPiece(_grid[y][x]);
+				switch (static_cast<short>(piece))
+				{
+					case PAWN:
+					{
+						if (player == WHITE)
+						{
+							if ((x + 1 < 8 && y + 1 < 8 && _grid[y + 1][x + 1] == PIECE(KING, WHITE))
+									|| (x - 1 >= 0 && y + 1 < 8 && _grid[y + 1][x - 1] == PIECE(KING, WHITE)))
+								return (true);
+						}
+						else
+						{
+							if ((x + 1 < 8 && y - 1 >= 0 && _grid[y - 1][x + 1] == PIECE(KING, BLACK))
+									|| (x - 1 >= 0 && y - 1 >= 0 && _grid[y - 1][x - 1] == PIECE(KING, BLACK)))
+								return (true);
+						}
+						break;
+					}
+					case QUEEN:
+					{
+						if (checkDirection(x, y, player, directions))
+							return (true);
+						break;
+					}
+					case ROOK:
+					{
+						if (checkDirection(x, y, player, rookDirections))
+							return (true);
+						break;
+					}
+					case BISHOP:
+					{
+						if (checkDirection(x, y, player, bishopDirections))
+							return (true);
+					}
+				}
 				std::cout << "Found danger for player " << (player == WHITE ? "White" : "Black") << " at x " << x << " | y " << y << " | piece " << _grid[y][x] << std::endl;
-				return (true);
+				break;
 			}
 			else if (!opponentPiece && _grid[y][x] != '.')
 				break;
@@ -125,4 +186,13 @@ Player Grid::hasCheck()
 	std::pair<short, short> blackKingPos = Utils::getPosition(*this, KING, BLACK);
 
 	return (checkCheck(whiteKingPos, WHITE) ? WHITE : checkCheck(blackKingPos, BLACK) ? BLACK : NONE);
+}
+
+void Grid::handleInputs(sf::RenderWindow &window)
+{
+	for (auto &piece : _pieces)
+	{
+		if (piece.getGlobalBounds().contains(WORLDPOS(window)))
+			piece.setRotation(90.f);
+	}
 }

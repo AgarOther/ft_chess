@@ -6,7 +6,7 @@
 /*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:54:46 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/06/22 22:22:30 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/06/23 21:07:02 by scraeyme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "Grid.hpp"
 #include "Texture.hpp"
 #include <SFML/Window/Event.hpp>
+
 unsigned int WINDOW_WIDTH = 1280;
 unsigned int WINDOW_HEIGHT = 720;
 
@@ -37,6 +38,8 @@ int main()
 				window.close();
 				break;
 			}
+			if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+				grid.handleInputs(window);
 		}
 		window.clear();
 		grid.render(window);

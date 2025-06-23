@@ -6,7 +6,7 @@
 /*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:53:44 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/06/22 21:52:07 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/06/23 21:02:59 by scraeyme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,3 +30,4 @@
 						std::cerr << "Couldn't find " << (y) << ". Aborting." << std::endl; \
 						exit(1); \
 					}
+#define WORLDPOS(window) (window).mapPixelToCoords(sf::Mouse::getPosition(window))

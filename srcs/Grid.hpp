@@ -6,7 +6,7 @@
 /*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:58:21 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/06/22 22:26:36 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/06/23 21:03:32 by scraeyme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,20 @@ const std::vector<std::pair<int, int>> directions = {
 			{ 1,  1 }  // SOUTHEAST
     	};
 
+const std::vector<std::pair<int, int>> rookDirections = {
+			{ 0, -1 }, // NORTH
+			{ 0,  1 }, // SOUTH
+			{ 1,  0 }, // EAST
+			{-1,  0 }, // WEST
+    	};
+
+const std::vector<std::pair<int, int>> bishopDirections = {
+			{-1, -1 }, // NORTHWEST
+			{ 1, -1 }, // NORTHEAST
+			{-1,  1 }, // SOUTHWEST
+			{ 1,  1 }  // SOUTHEAST
+    	};
+
 constexpr char startingGrid[8][8] = {
             {'r','n','b','q','k','b','n','r'},
             {'p','p','p','p','p','p','p','p'},
@@ -80,10 +94,12 @@ class Grid
 		char (*getGrid())[8];
 		char getPieceAt(short x, short y) const;
 		void render(sf::RenderWindow &window);
+		void handleInputs(sf::RenderWindow &window);
 	private:
 		char _grid[8][8];
 		std::vector<sf::Sprite> _tiles;
 		std::vector<sf::Sprite> _pieces;
 		bool checkCheck(const std::pair<short, short> &kingPos, Player player);
 		bool hasDanger(const std::pair<short, short> &pos, Player player);
+		bool checkDirection(short x, short y, Player player, std::vector<std::pair<int, int>> dirs);
 };

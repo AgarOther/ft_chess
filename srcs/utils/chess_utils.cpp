@@ -6,7 +6,7 @@
 /*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 17:08:58 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/06/22 21:47:09 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/06/23 20:08:48 by scraeyme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,27 @@ char Utils::getPieceAsChar(Piece piece)
 			return ('q');
 	}
 	return ('X');
+}
+
+Piece Utils::getPiece(char piece)
+{
+	switch (std::tolower(piece))
+	{
+		case 'p':
+			return (PAWN);
+		case 'r':
+			return (ROOK);
+		case 'n':
+			return (KNIGHT);
+		case 'b':
+			return (BISHOP);
+		case 'k':
+			return (KING);
+		case 'q':
+			return (QUEEN);
+		default:
+			return (EMPTY);
+	}
 }
 
 std::pair<short, short> Utils::getPosition(Grid &grid, Piece piece, Player player)

@@ -6,7 +6,7 @@
 /*   By: scraeyme <scraeyme@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 17:15:49 by scraeyme          #+#    #+#             */
-/*   Updated: 2025/06/22 21:19:12 by scraeyme         ###   ########.fr       */
+/*   Updated: 2025/06/23 20:06:52 by scraeyme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,5 @@ class Utils
 		static std::pair<short, short> getPosition(Grid &grid, Piece piece, Player player);
 		static char getPieceAsChar(Piece piece);
 		static bool isOpponentPiece(char piece, Player player);
+		static Piece getPiece(char piece);
 };
